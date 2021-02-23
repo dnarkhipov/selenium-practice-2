@@ -3,9 +3,15 @@ from .locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
+    def get_product_title(self):
+        return self.browser.find_element(*ProductPageLocators.PRODUCT_TITLE).text
+
+    def get_product_price_text(self):
+        return self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
+
     def add_product_to_basket(self):
-        product_title = self.browser.find_element(*ProductPageLocators.PRODUCT_TITLE).text
-        product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
+        product_title = self.get_product_title()
+        product_price = self.get_product_price_text()
 
         self.browser.find_element(*ProductPageLocators.BTN_ADD_TO_BASKET).click()
         self.solve_quiz_and_get_code()
