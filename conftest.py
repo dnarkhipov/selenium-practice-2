@@ -21,7 +21,6 @@ def browser(request):
         driver = webdriver.Firefox()
     else:
         raise pytest.UsageError("--browser_name should be chrome or firefox")
-    driver.implicitly_wait(15)
     yield driver
     print("\nquit browser..")
     driver.quit()
