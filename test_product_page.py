@@ -4,31 +4,7 @@ from pages import ProductPage, LoginPage, BasketPage, ProductPageLocators, Baske
 
 @pytest.mark.parametrize('link', [
     "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear",
-    "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
-])
-def test_guest_can_add_product_to_basket(browser, link):
-    page = ProductPage(browser, link)
-    page.open()
-
-    product_title = page.get_product_title()
-    product_price = page.get_product_price_text()
-
-    page.add_product_to_basket()
-    page.solve_quiz_and_get_code()
-
-    # Сообщение о том, что товар добавлен в корзину. Название товара в сообщении должно совпадать с тем товаром,
-    # который вы действительно добавили.
-    basket_title_text = page.browser.find_element(*ProductPageLocators.BASKET_ALERT_TITLE).text
-    assert basket_title_text == product_title, \
-        'Название товара в сообщении не совпадает с тем товаром, который добавили'
-
-    # Сообщение со стоимостью корзины. Стоимость корзины совпадает с ценой товара.
-    basket_price_text = page.browser.find_element(*ProductPageLocators.BASKET_ALERT_PRICE).text
-    # Стоимость корзины теперь составляет <strong>9,99&nbsp;£</strong>
-    assert basket_price_text.find(product_price) >= 0, 'Стоимость корзины не совпадает с ценой товара'
-
-
-@pytest.mark.parametrize('link', [
+    "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019",
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
@@ -36,11 +12,14 @@ def test_guest_can_add_product_to_basket(browser, link):
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer4",
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer5",
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer6",
-    pytest.param("http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7", marks=pytest.mark.xfail),
+    pytest.param(
+        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
+        marks=pytest.mark.xfail
+    ),
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
     "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"
 ])
-def test_guest_can_add_product_to_basket_bug(browser, link):
+def test_guest_can_add_product_to_basket(browser, link):
     page = ProductPage(browser, link)
     page.open()
 
