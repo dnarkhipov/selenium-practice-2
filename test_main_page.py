@@ -1,13 +1,13 @@
 import pytest
-from pages import MainPage, BasketPage, LoginPage, BasketPageLocators
+from pages import MainPage, BasketPage, LoginPage
 
 
 @pytest.mark.login_guest
 class TestLoginFromMainPage():
     def test_guest_can_go_to_login_page(self, browser):
         link = "http://selenium1py.pythonanywhere.com/"
-        page = MainPage(browser, link)  # инициализируем Page Object, передаем в конструктор экземпляр драйвера и url адрес
-        page.open()  # открываем страницу
+        page = MainPage(browser, link)
+        page.open()
         page.should_be_login_link()
         page.go_to_login_page()
         login_page = LoginPage(browser, browser.current_url)
@@ -19,10 +19,4 @@ class TestLoginFromMainPage():
         page.open()
         page.go_to_basket_page()
         basket_page = BasketPage(browser, browser.current_url)
-
-        # Ожидаем, что в корзине нет товаров
-        assert basket_page.is_not_element_present(*BasketPageLocators.BASKET_ITEMS), \
-            "Items list is presented, but should not be"
-
-        # Ожидаем, что есть текст о том что корзина пуста
-        assert basket_page.get_content_text(), "Missed text 'Your basket is empty' in Basket page"
+        basket_page.should_be_empty()
